@@ -55,11 +55,11 @@ dependencies {
 
 
 	// fcm, okhttp
-	implementation group: 'com.google.firebase', name: 'firebase-admin', version: '9.1.1'
-	implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.10.0'
+//	implementation group: 'com.google.firebase', name: 'firebase-admin', version: '9.1.1'
+//	implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.10.0'
 
 	// S3
-	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.1.RELEASE'
+//	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.1.RELEASE'
 
 	// web client
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'

@@ -1,7 +1,7 @@
 package com.ssafy.special.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.special.dto.response.LoginFailDto;
+import com.ssafy.special.security.dto.response.LoginFailDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;

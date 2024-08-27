@@ -1,7 +1,7 @@
 package com.ssafy.special.security.service;
 
-import com.ssafy.special.domain.member.Member;
-import com.ssafy.special.repository.member.MemberRepository;
+import com.ssafy.special.member.domain.Member;
+import com.ssafy.special.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

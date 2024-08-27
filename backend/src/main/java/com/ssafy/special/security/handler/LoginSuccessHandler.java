@@ -1,9 +1,9 @@
 package com.ssafy.special.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.special.domain.member.Member;
-import com.ssafy.special.dto.response.LoginSuccessDto;
-import com.ssafy.special.repository.member.MemberRepository;
+import com.ssafy.special.member.domain.Member;
+import com.ssafy.special.security.dto.response.LoginSuccessDto;
+import com.ssafy.special.member.repository.MemberRepository;
 import com.ssafy.special.security.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

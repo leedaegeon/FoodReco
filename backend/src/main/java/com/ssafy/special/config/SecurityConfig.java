@@ -1,7 +1,7 @@
 package com.ssafy.special.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.special.repository.member.MemberRepository;
+import com.ssafy.special.member.repository.MemberRepository;
 import com.ssafy.special.security.filter.CustomJsonUsernamePasswordAuthenticationFilter;
 import com.ssafy.special.security.filter.JwtAuthenticationProcessingFilter;
 import com.ssafy.special.security.handler.LoginFailureHandler;
@@ -25,7 +25,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
