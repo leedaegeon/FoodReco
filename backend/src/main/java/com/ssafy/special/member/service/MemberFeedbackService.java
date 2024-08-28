@@ -1,25 +1,24 @@
 package com.ssafy.special.member.service;
 
 import com.ssafy.special.food.domain.Food;
+import com.ssafy.special.food.dto.request.FeedbackDto;
+import com.ssafy.special.food.repository.FoodRepository;
 import com.ssafy.special.member.domain.Member;
 import com.ssafy.special.member.domain.MemberFoodPreference;
 import com.ssafy.special.member.domain.MemberRecommend;
-import com.ssafy.special.food.dto.request.FeedbackDto;
-import com.ssafy.special.food.repository.FoodRepository;
 import com.ssafy.special.member.repository.MemberFoodPreferenceRepository;
 import com.ssafy.special.member.repository.MemberRecommendRepository;
-import com.ssafy.special.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Setter
@@ -29,27 +28,21 @@ import java.util.*;
 public class MemberFeedbackService {
 
     private final MemberRecommendRepository memberRecommendRepository;
-    private final MemberRepository memberRepository;
-    private final WebClient webClient;
     private final MemberService memberService;
     private final FoodRepository foodRepository;
     private final MemberFoodPreferenceRepository memberFoodPreferenceRepository;
-    private final MemberGoogleAuthService memberGoogleAuthService;
-    private final FoodRecommendService foodRecommendService;
     //    @Value("${cloud.aws.s3.bucket}")
 //    private String bucket;
 //
 //    @Value("${cloud.aws.region.static}")
 //    private String region;
 
-
-
     /* 묵시적 피드백 반영 */
     /*
     차단:0,
 	패스:2,
 	상세보기:3,
-	좋아요:4
+	좋아요:4ø
 //    */
 //    피드백시 다음 음식이 어떤건지 프론트에서 알려줌
 //    그 음식을 추천받은 DB 추가하기 -> 푸드 레이팅에 1로
@@ -171,9 +164,6 @@ public class MemberFeedbackService {
                 memberRecommendRepository.save(memberRecommend2);
             }
         }
-
-
-
 
     }
 

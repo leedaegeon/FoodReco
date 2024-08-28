@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class FoodRecommendServiceImpl implements FoodRecommendService {
     private final MemberRecommendRepository memberRecommendRepository;
-    private final MemberRepository memberRepository;
     private final MemberService memberService;
     private final WebClient webClient;
     private final FoodFilteringService foodFilteringService;
