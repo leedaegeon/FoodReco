@@ -3,9 +3,10 @@ package com.ssafy.special.member.controller;
 import com.ssafy.special.food.dto.request.FeedbackDto;
 import com.ssafy.special.food.dto.response.RecommendFoodResultDto;
 import com.ssafy.special.etc.service.WeatherService;
+import com.ssafy.special.member.service.FoodRecommendService;
 import com.ssafy.special.member.service.MemberGoogleAuthService;
 import com.ssafy.special.crew.service.CrewRecommendService;
-import com.ssafy.special.member.service.MemberRecommendService;
+import com.ssafy.special.member.service.MemberFeedbackService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +22,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/recommend")
 public class MemberRecommendController {
-    private final MemberRecommendService memberRecommendService;
+    private final MemberFeedbackService memberFeedbackService;
     private final MemberGoogleAuthService memberGoogleAuthService;
     private final CrewRecommendService crewRecommendService;
     private final WeatherService weatherService;
-
+    private final FoodRecommendService foodRecommendService;
     @PatchMapping("/feedback/{nextFoodSeq}/{let}/{lon}")
     public ResponseEntity<?> implicitFeedback(@RequestBody FeedbackDto feedbackRequestDto, @PathVariable Long nextFoodSeq, @PathVariable Double let, @PathVariable Double lon){
         String memberEmail = getEmail();
@@ -39,7 +40,7 @@ public class MemberRecommendController {
             }
             int googleSteps = memberGoogleAuthService.getActivityFromGoogle(memberEmail);
             log.info(Integer.toString(googleSteps));
-            memberRecommendService.implicitFeedback(memberEmail, feedbackRequestDto, nextFoodSeq, googleSteps, weather);
+            memberFeedbackService.implicitFeedback(memberEmail, feedbackRequestDto, nextFoodSeq, googleSteps, weather);
             log.info("묵시적 피드백 업데이트 완료");
             return ResponseEntity.ok().body("묵시적 피드백 업데이트 완료");
         }catch (EntityNotFoundException e){
@@ -65,7 +66,7 @@ public class MemberRecommendController {
             }
             int googleCalorie = memberGoogleAuthService.getActivityFromGoogle(memberEmail);
             log.info(Integer.toString(googleCalorie));
-            List<RecommendFoodResultDto> recommendFoodDtoList = memberRecommendService.recommendFood(memberEmail, googleCalorie, weather);
+            List<RecommendFoodResultDto> recommendFoodDtoList = foodRecommendService.recommendFood(memberEmail, googleCalorie, weather);
             log.info("추천 완료");
             return ResponseEntity.ok().body(recommendFoodDtoList);
         }catch (EntityNotFoundException e){

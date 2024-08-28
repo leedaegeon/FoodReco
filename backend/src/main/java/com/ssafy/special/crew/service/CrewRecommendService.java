@@ -20,10 +20,11 @@ import com.ssafy.special.member.repository.MemberFoodPreferenceRepository;
 import com.ssafy.special.member.repository.MemberRecommendRepository;
 import com.ssafy.special.member.repository.MemberRepository;
 import com.ssafy.special.etc.service.SseService;
-import com.ssafy.special.member.service.MemberRecommendService;
+import com.ssafy.special.member.service.FoodFilteringService;
+import com.ssafy.special.member.service.FoodRecommendService;
+import com.ssafy.special.member.service.MemberFeedbackService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +41,7 @@ public class CrewRecommendService {
     private final CrewRepository crewRepository;
     private final CrewMemberRepository crewMemberRepository;
     private final CrewRecommendRepository crewRecommendRepository;
-    private final MemberRecommendService memberRecommendService;
+    private final MemberFeedbackService memberFeedbackService;
     private final MemberRecommendRepository memberRecommendRepository;
     private final MemberAllergyRepository memberAllergyRepository;
     private final MemberFoodPreferenceRepository memberFoodPreferenceRepository;
@@ -49,7 +50,8 @@ public class CrewRecommendService {
     private final TaskScheduler taskScheduler;
     private final SseService sseService;
 
-
+    private final FoodFilteringService foodFilteringService;
+    private final FoodRecommendService foodRecommendService;
 //    @org.springframework.beans.factory.annotation.Value("${cloud.aws.s3.bucket}")
 //    private String bucket;
 //    @Value("${cloud.aws.region.static}")
@@ -79,19 +81,19 @@ public class CrewRecommendService {
         List<MemberFoodPreference> crewMemberPreferenceList = new ArrayList<>();
         List<Long> crewMemberRecommendFoodWithinOneWeekList = new ArrayList<>();
         for(CrewMember c : crew.getCrewMembers()){
-            crewRecommendFoodList.addAll(memberRecommendService.getRecommendList(c.getMember().getMemberSeq(),LocalDateTime.now(),c.getMember().getEmail(), c.getMember().getActivity(), "맑음"));
+            crewRecommendFoodList.addAll(foodRecommendService.getRecommendList(c.getMember().getMemberSeq(),LocalDateTime.now(),c.getMember().getEmail(), c.getMember().getActivity(), "맑음"));
             crewAllergyList.addAll(memberAllergyRepository.findMemberAllergiesByMember_MemberSeq(c.getMember().getMemberSeq()));
             crewMemberPreferenceList.addAll(memberFoodPreferenceRepository
                     .findMemberFoodPreferencesByMember_MemberSeqAndPreferenceType(c.getMember().getMemberSeq(), 1));
             crewMemberRecommendFoodWithinOneWeekList.addAll(memberRecommendRepository.findMemberRecommendsWithinOneWeek(c.getMember().getMemberSeq(), LocalDateTime.now()));
         }
 //        2. 알러지 필터링
-        crewRecommendFoodList = memberRecommendService.filteringByAllergy(crewAllergyList, crewRecommendFoodList);
+        crewRecommendFoodList = foodFilteringService.filteringByAllergy(crewAllergyList, crewRecommendFoodList);
 
 //        3. 차단 필터링
-        crewRecommendFoodList = memberRecommendService.filteringByHate(crewMemberPreferenceList, crewRecommendFoodList);
+        crewRecommendFoodList = foodFilteringService.filteringByHate(crewMemberPreferenceList, crewRecommendFoodList);
 //        4. 최근에 먹음 처리
-        crewRecommendFoodList = memberRecommendService.filteringByRecently(crewMemberRecommendFoodWithinOneWeekList, crewRecommendFoodList);
+        crewRecommendFoodList = foodFilteringService.filteringByRecently(crewMemberRecommendFoodWithinOneWeekList, crewRecommendFoodList);
         Map<Long, Integer> cnt = new HashMap<>();
         for(RecommendFoodDto food : crewRecommendFoodList){
             cnt.put(food.getFoodSeq(),cnt.getOrDefault(food.getFoodSeq(),0) + 1);

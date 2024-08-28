@@ -54,7 +54,15 @@ public class MemberService {
 //    @Value("${cloud.aws.region.static}")
 //    private String region;
 
+    public Member getMember(String memberEmail) {
+        Optional<Member> memberOptional = memberRepository.findByEmail(memberEmail);
 
+        if (memberOptional.isEmpty()) {
+            throw new EntityNotFoundException("해당 사용자를 찾을 수 없습니다.");
+        }
+
+        return memberOptional.get();
+    }
     // 아이디 중복 값 검사
     public void checkEmail(String memberEmail) throws DuplicateEmailException {
         if (memberRepository.findByEmail(memberEmail).isPresent()) {
